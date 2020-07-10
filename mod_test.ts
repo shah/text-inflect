@@ -4,7 +4,7 @@ import {
 } from "https://deno.land/std@v0.60.0/testing/asserts.ts";
 import * as inflect from "./mod.ts";
 
-Deno.test("InflectableValue", () => {
+Deno.test("Snake Case InflectableValue", () => {
   const scs = inflect.snakeCaseValue("Snake_Case_Text");
   assertEquals("Snake_Case_Text", scs.inflect());
   assertEquals("snakeCaseText", inflect.toCamelCase(scs));
@@ -13,7 +13,7 @@ Deno.test("InflectableValue", () => {
   assertEquals("snake-case-text", inflect.toKebabCase(scs));
 });
 
-Deno.test("PluraziableValue Auto Plural", () => {
+Deno.test("Snake Case PluraziableValue Auto Plural", () => {
   const scs = inflect.snakeCaseValueAutoPlural("Party_Id");
   assert(scs.pluralizer, "Pluralizer should have a default");
   const plural = scs.pluralizer.pluralOf(scs);
@@ -24,7 +24,7 @@ Deno.test("PluraziableValue Auto Plural", () => {
   assertEquals("party-ids", inflect.toKebabCase(plural));
 });
 
-Deno.test("PluraziableValue Custom Plural", () => {
+Deno.test("Snake Case PluraziableValue Custom Plural", () => {
   const scs = inflect.snakeCaseValueCustomPlural("All_Party", "All_Parties");
   assert(scs.pluralizer, "Pluralizer should be set to static");
   const plural = scs.pluralizer.pluralOf(scs);
@@ -33,6 +33,16 @@ Deno.test("PluraziableValue Custom Plural", () => {
   assertEquals("All Parties", inflect.toHumanCase(plural));
   assertEquals("AllParties", inflect.toPascalCase(plural));
   assertEquals("all-parties", inflect.toKebabCase(plural));
+});
+
+Deno.test("Human Case InflectableValue", () => {
+  const scs = inflect.humanCaseValue("Human Case Text");
+  assertEquals("Human Case Text", scs.inflect());
+  assertEquals("humanCaseText", inflect.toCamelCase(scs));
+  assertEquals("HumanCaseText", inflect.toPascalCase(scs));
+  assertEquals("human_case_text", inflect.toSnakeCase(scs));
+  assertEquals("Human_Case_Text", inflect.toSnakeCase(scs, true));
+  assertEquals("human-case-text", inflect.toKebabCase(scs));
 });
 
 Deno.test("Inflection utilities", () => {

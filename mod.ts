@@ -13,6 +13,13 @@ export function snakeCaseInflectorComponentsCreator(
   canonical.inflect().split("_").forEach(handler);
 }
 
+export function humanCaseInflectorComponentsCreator(
+  canonical: InflectableValue,
+  handler: inflect,
+): void {
+  canonical.inflect().split(" ").forEach(handler);
+}
+
 export interface InflectableValue {
   inflect(): string;
   inflectorComponentsCreator: InflectorComponentsCreator;
@@ -38,6 +45,15 @@ export function snakeCaseValue(canonical: string): InflectableValue {
       return canonical;
     },
     inflectorComponentsCreator: snakeCaseInflectorComponentsCreator,
+  };
+}
+
+export function humanCaseValue(canonical: string): InflectableValue {
+  return {
+    inflect(): string {
+      return canonical;
+    },
+    inflectorComponentsCreator: humanCaseInflectorComponentsCreator,
   };
 }
 
@@ -129,12 +145,15 @@ export function toHumanCase(identifier: InflectableValue): string {
   return result;
 }
 
-export function toSnakeCase(identifier: InflectableValue): string {
+export function toSnakeCase(
+  identifier: InflectableValue,
+  upperCaseInitial?: boolean,
+): string {
   let result = "";
   identifier.inflectorComponentsCreator(identifier, function (el, idx) {
     if (idx > 0) result += "_";
     var add = el.toLowerCase();
-    result += add[0].toUpperCase() + add.slice(1);
+    result += (upperCaseInitial ? add[0].toUpperCase() : add[0]) + add.slice(1);
   });
   return result;
 }
