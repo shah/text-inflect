@@ -45,6 +45,16 @@ Deno.test("Human Case InflectableValue", () => {
   assertEquals("human-case-text", inflect.toKebabCase(scs));
 });
 
+Deno.test("Guess Case InflectableValue (split on any non-alpha-numeric delim)", () => {
+  const scs = inflect.guessCaseValue("Generic Text_With(Some-extras)!");
+  assertEquals("Generic Text_With(Some-extras)!", scs.inflect());
+  assertEquals("genericTextWithSomeExtras", inflect.toCamelCase(scs));
+  assertEquals("GenericTextWithSomeExtras", inflect.toPascalCase(scs));
+  assertEquals("generic_text_with_some_extras", inflect.toSnakeCase(scs));
+  assertEquals("Generic_Text_With_Some_Extras", inflect.toSnakeCase(scs, true));
+  assertEquals("generic-text-with-some-extras", inflect.toKebabCase(scs));
+});
+
 Deno.test("Inflection utilities", () => {
   assertEquals("party", inflect.camelToSnakeLowerCase("party"));
   assertEquals(

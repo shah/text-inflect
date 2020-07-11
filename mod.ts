@@ -20,6 +20,19 @@ export function humanCaseInflectorComponentsCreator(
   canonical.inflect().split(" ").forEach(handler);
 }
 
+export function guessInflectorComponentsCreator(
+  canonical: InflectableValue,
+  handler: inflect,
+): void {
+  const parts = canonical.inflect().split(/[^0-9A-Za-z]/);
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
+    if (part.trim().length > 0) {
+      handler(part, i, parts);
+    }
+  }
+}
+
 export interface InflectableValue {
   inflect(): string;
   inflectorComponentsCreator: InflectorComponentsCreator;
@@ -54,6 +67,15 @@ export function humanCaseValue(canonical: string): InflectableValue {
       return canonical;
     },
     inflectorComponentsCreator: humanCaseInflectorComponentsCreator,
+  };
+}
+
+export function guessCaseValue(canonical: string): InflectableValue {
+  return {
+    inflect(): string {
+      return canonical;
+    },
+    inflectorComponentsCreator: guessInflectorComponentsCreator,
   };
 }
 
