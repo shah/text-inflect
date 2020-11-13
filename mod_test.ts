@@ -1,7 +1,7 @@
 import {
   assertEquals,
   assert,
-} from "https://deno.land/std@v0.62.0/testing/asserts.ts";
+} from "https://deno.land/std@0.77.0/testing/asserts.ts";
 import * as inflect from "./mod.ts";
 
 Deno.test("Snake Case InflectableValue", () => {
